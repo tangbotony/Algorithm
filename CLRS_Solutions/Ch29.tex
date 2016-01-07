@@ -1,0 +1,681 @@
+\documentclass{article}
+\usepackage{fancyhdr}
+\usepackage{amsthm}
+\usepackage{etoolbox}
+\usepackage{verbatim}
+\usepackage{enumerate}
+\usepackage{amsmath}
+\usepackage{algorithmicx}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{amssymb}
+\usepackage{tikz}
+	
+\pagestyle{fancy}
+\title{Chapter 29}
+\author{Michelle Bodnar, Andrew Lohr}
+
+\newcounter{curnum}
+\setcounter{curnum}{0}
+
+\newtheorem{th1}{Exercise} 
+\newcommand{\calH}{\mathcal{H}}
+\newcommand{\calX}{\mathcal{X}}
+\newcommand{\calA}{\mathcal{A}}
+\newcommand{\calY}{\mathcal{Y}}
+
+
+
+\algblock{ParFor}{EndParFor}
+% customising the new block
+\algnewcommand\algorithmicparfor{\textbf{parallel for}}
+\algnewcommand\algorithmicpardo{\textbf{do}}
+\algnewcommand\algorithmicendparfor{\textbf{end}}
+\algrenewtext{ParFor}[1]{\algorithmicparfor\ #1\ \algorithmicpardo}
+\algrenewtext{EndParFor}{\algorithmicendparfor}
+
+\begin{document}
+\maketitle
+\noindent\textbf{Exercise 29.1-1}\\
+
+\[
+c= \left(\begin{array}{c}2\\-3\\3\end{array}\right)
+\]
+\[
+A = \left(\begin{array}{ccc}
+1&1&-1\\
+-1&-1&1\\
+1&-2&2\\
+\end{array}\right)
+\]
+\[
+b= \left(\begin{array}{c}7\\-7\\4\end{array}\right)
+\]
+
+with $m=n=3$\\
+
+\noindent\textbf{Exercise 29.1-2}\\
+
+One solution is $(x_1,x_2,x_3) = (6,1,0)$ with objective value 9.  Another is $(5,2,0)$ with objective value 4.  A third is $(4,3,0)$ with objective value -1. \\
+
+\noindent\textbf{Exercise 29.1-3}\\
+
+
+\[
+N = \{1,2,3\}
+\]
+\[
+B = \{4,5,6\}
+\]
+\[
+A = \left(\begin{array}{ccc}
+1&1&-1\\
+-1&-1&1\\
+1&-2&2\\
+\end{array}\right)
+\]
+\[
+b= \left(\begin{array}{c}7\\-7\\4\end{array}\right)
+\]
+\[
+c= \left(\begin{array}{c}2\\-3\\3\end{array}\right)
+\]
+
+And $v=0$.\\
+
+\noindent\textbf{Exercise 29.1-4}\\
+
+\begin{align*}
+\mbox{maximize \,\,\,} & -2x_1 - 2x_2 - 7x_3 + x_4 \\
+\mbox{subject to \,} & -x_1 + x_2 - x_4 \leq -7 \\
+& x_1 - x_2 + x_4 \leq 7 \\
+& -3x_1 + 3x_2 - x_3 \leq -24 \\
+& x_1,x_2,x_3,x_4 \geq 0
+\end{align*}
+
+
+\noindent\textbf{Exercise 29.1-5}\\
+
+First, we will multiply the second and third inequalities by minus one to make it so that they are all $\le$ inequalities. We will introduce the three new variables $x_4,x_5,x_6$, and perform the usual procedure for rewriting in slack form
+\begin{align*}
+x_4 &= 7-x_1 - x_2 +x_3\\
+x_5 &= -8 +3x_1 - x_2\\
+x_6 &= -x_1+2x_2 +2x_3\\
+x_1,x_2,x_3,x_4,x_5,x_6 &\ge 0
+\end{align*}
+
+where we are sill tring to maximize $2x_1 -6x_3$. The basic variables are $x_4,x_5,x_6$ and the nonbasic variables are $x_1,x_2,x_3$.\\
+
+\noindent\textbf{Exercise 29.1-6}\\
+
+By dividing the second constraint by 2 and adding to the first, we have $0 \leq -3$, which is impossible.  Therefore there linear program is infeasible. \\
+
+\noindent\textbf{Exercise 29.1-7}\\
+
+For any number $r>1$, we can set $x_1 = 2r$ and $x_2 = r$. Then, the restaints become
+\begin{align*}
+-2r +r &= -r \le -1\\
+-2r -2r &=-4r \le -2\\
+2r,r &\ge 0
+\end{align*}
+
+All of these inequalities are clearly satisfied because of our initial restriction in selecting $r$. Now, we look to the objective function, it is $2r -r = r$. So, since we can select $r$ to be arbitrarily large, and still satisfy all of the constraints, we can achieve an arbitrarily large value of the objective function.\\
+
+\noindent\textbf{Exercise 29.1-8}\\
+
+In the worst case, we have to introduce 2 variables for every variable to ensure that we have nonnegativity constraints, so the resulting program will have $2n$ variables.  If each constraint is an equality, we would have to double the number of constraints to create inequalities, resulting in $2m$ constraints.  Changing minimization to maximization and greater-than signs to less-than signs don't affect the number of variables or constraints, so the upper bound is $2n$ on variables and $2m$ on constraints. \\
+
+\noindent\textbf{Exercise 29.1-9}\\
+
+Consider the linear program where we want to maximize $x_1-x_2$ subject to the constraints $x_1-x_2 \le 1$ and $x_1,x_2\ge 0$. clearly the objective value can never be greater than one, and it is easy to achieve the optimal value of $1$, by setting $x_1 = 1$ and $x_2 = 0$. Then, this feasable region is unbounded because for any number $r$, we could set $x_1 = x_2 =r$, and that would be feasible because the difference of the two would be zero which is $\le 1$.
+
+If we further wanted it so that there was a single solution that achieved the finite optimal value, we could add the requirements that $x_1 \le 1$.\\
+
+
+
+\noindent\textbf{Exercise 29.2-1}\\
+
+The objective is already in normal form. However, some of the constraints are equality constraints instead of $\le$ constraints. This means that we need to rewrite them as a pair of inequality constraints, the overlap of whose solutions is just the case where we have equality. we also need to deal with the fact that most of the variables can be negative. To do that, we will introduce variables for the negative part and positive part, each of which need be positive, and we'll just be sure to subtract the negative part. $d_s$ need not be changed in this way since it can never be negative since we are not assuming the existence of negative weight cycles.
+
+\begin{align*}
+d_v^+- d_v^- - d_u^+ +d_u^- &\le w(u,v) \hbox{for every edge $(u,v)$}\\
+d_s &\le 0\\
+\hbox{all variables are positive}
+\end{align*}
+
+\noindent\textbf{Exercise 29.2-2}\\
+
+\begin{align*}
+\mbox{maximize \,\,\,} & d_y\\
+\mbox{subject to \,} & d_t \leq d_s + 3 \\
+& d_x \leq d_t + 6 \\
+& d_y \leq d_s + 5 \\
+& d_y \leq d_t + 2 \\
+& d_z \leq d_x + 2 \\
+& d_t \leq d_y + 1 \\
+& d_x \leq d_y + 4 \\
+& d_z \leq d_y + 1 \\
+& d_s \leq d_z + 1 \\
+& d_x \leq d_z + 7 \\
+& d_2 = 0
+\end{align*}
+
+\noindent\textbf{Exercise 29.2-3}\\
+
+We will follow a similar idea to the way to when we were finding the shortest path between two particular vertices.
+\begin{align*}
+\hbox{maximize }&\sum_{v\in V} d_v\\
+\hbox{subject to }& d_v\le d_u + w(u,v) \hbox{for each edge (u,v)}\\
+&d_s =0
+\end{align*}
+
+The first type of constraint makes sure that we never say that a vertex is further away than it would be if we just took the edge corresponding to that constraint. Also, since we are trying to maximize all of the variables, we will make it so that there is no slack anywhere, and so all the $d_v$ values will correspond to lengths of shortest paths to $v$. This is because the only thing holding back the variables is the information about relaxing along the edges, which is what determines shortest paths.\\
+
+\noindent\textbf{Exercise 29.2-4}\\
+
+\begin{align*}
+\mbox{maximize \,\,\,} & f_{sv_1} + f_{sv_2}\\
+\mbox{subject to \,} & f_{sv_1} \leq 16 \\
+& f_{sv_2} \leq 14 \\
+& f_{v_1v_3} \leq 12 \\
+& f_{v_2v_1} \leq 4 \\
+& f_{v_2v_4} \leq 14 \\
+& f_{v_3v_2} \leq 9 \\
+& f_{v_3t} \leq 20 \\
+& f_{v_4v_3} \leq 7 \\
+& f_{v_4t} \leq 4 \\
+& f_{sv_1} + f_{v_2v_1} = f_{v_1v_3} \\
+& f_{sv_2} + f_{v_3v_2} = f_{v_2v_1} + f_{v_2v_4} \\
+& f_{v_1v_3} + f_{v_4v_3} = f_{v_3v_2} + f_{v_3t} \\
+& f_{v_2v_4} = f_{v_4v_3} + f_{v_4t} \\
+&f_{uv} \geq 0 \mbox{ for } u,v \in \{s, v_1, v_2, v_3, v_4, t\}
+\end{align*}
+
+\noindent\textbf{Exercise 29.2-5}\\
+
+All we need to do to bring the number of constraints down from $O(V^2)$ to $O(V+E)$ is to replace the way we index the flows. Instead of indexing it by a pair of vertices, we will index it by an edge. This won't change anything about the analysis because between pairs of vertices that don't have an edge between them, there definitely won't be any flow. Also, it brings the number of constraints of the first and third time down to $O(E)$ and the number of constraints of the second kind stays at $O(V)$.
+
+\begin{align*}
+\hbox{maximize }&\sum_{\hbox{edges e coming out of s}} f_e - \sum_{\hbox{edges e going into s}} f_s\\
+\hbox{subject to }& f_{(u,v)}\le c(u,v)\hbox{for each edge (u,v)}\\
+& \sum_{\hbox{edges e leaving u}} f_e = \sum_{\hbox{edges e entering u}} f_e \hbox{  for each edge $u \in V-\{s,t\}$}\\
+&f_e \ge 0 \hbox{  for each edge e}
+\end{align*}
+
+\noindent\textbf{Exercise 29.2-6}\\
+
+Recall from section 26.3 that we can solve the maximum-bipartite-matching problem by viewing it as a network flow problem, where we append a source $s$ and sink $t$, each connected to every vertex is $L$ and $R$ respectively by an edge with capacity 1, and we give ever edge already in the bipartite graph capacity 1.  The integral maximum flows are in correspondence with maximum bipartite matchings. In this setup, the linear programming problem to solve is as follows:
+
+\begin{align*}
+\mbox{maximize \,\,\,} & \sum_{v \in L} f_{sv}\\
+\mbox{subject to \,} & f_{uv} \leq 1 \mbox{ for each } u,v \in \{s\} \cup L \cup R \cup \{t\} = V \\
+& \sum_{v \in V} f_{vu} = \sum_{v \in V} f_{uv} \mbox{ for each } u \in L \cup R \\
+& f_{uv} \geq 0 \mbox{ for each } u,v \in V \\
+\end{align*}
+
+\noindent\textbf{Exercise 29.2-7}\\
+
+As in the minimum cost flow problem, we have constaints for the edge capacities, for the conservation of flow, and nonegativity. The difference is that the restraint that before we required exactly $d$ units to flow, now, we require that for each commodity, the right amount of that comodity flows. the conservation equalities will be applied to each different type of commodity independently. If we super script $f$ that will denote the type of commodity the flow is describing, if we do not superscript it, it will denote the aggregate flow.
+
+We want to minimize
+\[
+\sum_{u,v\in V}a(u,v) f_{uv}
+\]
+
+The capacity constraints are that
+
+\[
+\sum_{i\in [k]} \sum_{u,v \in V} f_{uv}^i \le c(u,v)
+\]
+
+The conservation constraints are that for every $i\in [k]$, for every $u\in V\setminus\{s_i,t_i\}$.
+\[
+\sum_{v\in V} f_{u,v}^i = \sum_{v\in V} f_{v,u}^i
+\]
+
+Now, the constraints that correspond to requiring a certain amount of flow are that for every $i\in [k]$.
+
+\[
+\sum_{v\in V} f_{s_i,v}^i -\sum_{v\in V} f_{v,s_i}^i = d
+\]
+
+Now, we put in the constraint that makes sure what we called the aggregate flow is actually the aggregate flow, so, for every $u,v\in V$,
+
+\[
+f_{u,v} = \sum_{i\in[k]} f_{u,v}^i
+\]
+
+Finally, we get to the fact that all flows are nonnegative, for every $u,v\in V$,
+
+\[
+f_{u,v} \ge 0
+\]
+
+
+
+\noindent\textbf{Exercise 29.3-1}\\
+
+We subtract equation (29.81) from equation (29.79). This gets us
+
+\[
+0 = v - v' + \sum_{j\in N} (c_j - c_j') x_j
+\]
+which can be rearranged to
+\[
+\sum_{j\in N} c_j' x_j = (v-v') + \sum_{j\in N} c_j x_j
+\]
+
+Then, by applying Lemma 29.3, we get that for every $j$, we have $c_j = c_j'$ and also, $(v-v')=0$, so $v= v'$.\\
+
+
+\noindent\textbf{Exercise 29.3-2}\\
+
+The only time $v$ is updated in PIVOT is line 14, so it will suffice to show that $c_e\hat{b}_e \geq 0$. Prior to making the call to PIVOT, we choose an index $e$ such that $c_e > 0$, and this is unchanged in PIVOT.  We set $\hat{b}_e$ in line 3 to be $b_l / a_{le}$.  The loop invariant proved in Lemma 29.2 tells us that $b_l \geq 0$. The if-condition of line 6 of SIMPLEX tells us that only the noninfinite $\delta_i$ must have $a_{ie} > 0$, and we choose $l$ to minimize $\delta_l$, so we must have $a_{le} > 0$.  Thus, $c_e\hat{b}_e \geq 0$, which implies $v$ can never decrease. \\
+
+\noindent\textbf{Exercise 29.3-3}\\
+
+To show that the two slack forms are equivalent, we will show both that they have equal objective functions, and their sets of feasible solutions are equal.
+
+First, we'll check that their sets of feasible solutions are equal. Basically all we do to the constraints when we pivot is take the non-basic variable, e, and solve the equation corresponding to the basic variable $l$ for $e$. We are then taking that expression and replacing $e$ in all the constraints with this expression we got by solving the equation corresponding to $l$. Since each of these algebraic operations are valid, the result of the sequence of them is also algebraically equivalent to the original.
+
+Next, we'll see that the objective functions are equal. We decrease each $c_j$ by $c_e \hat{a}_{ej}$, which is to say that we replace the non-basic variable we are making basic with the expression we got it was equal to once we made it basic.
+
+Since the slack form returned by PIVOT, has the same feasible region and an equal objective function, it is equivalent to the original slack form passed in.\\
+
+\noindent\textbf{Exercise 29.3-4}\\
+
+First suppose that the basic solution is feasible.  We set each $x_i = 0$ for $1 \leq i \leq n$, so we have $x_{n+i} = b_i - \sum_{j=1}^n a_{ij}x_j = b_i$ as a satisfied constraint.  Since we also require $x_{n+i} \geq 0$ for all $1 \leq i \leq m$, this implies $b_i \geq 0$.  Now suppose $b_i \geq 0$ for all $i$.   In the basic solution we set $x_i = 0$ for $1 \leq i \leq n$ which satisfies the nonnegativity constraints.  We set $x_{n+i} = b_i$ for $1 \leq i \leq m$ which satisfies the other constraint equations, and also the nonnegativity constraints on the basic variables since $b_i \geq 0$.  Thus, every constraint is satisfied, so the basic solution is feasible. \\
+
+\noindent\textbf{Exercise 29.3-5}\\
+
+First, we rewrite the linear program into it's slack form, we want to maximize $18x_1 + 12.5x_2$, given the constraints
+
+\begin{align*}
+x_3 & = 20 - x_1 - x_2\\
+x_4 & = 12 - x_1 \\
+x_5 & = 16 - x_2\\
+x_1,x_2,x_3,x_4,x_5 &\ge 0
+\end{align*}
+
+Then, we take the initial basic solution, we get that $x_1 = x_2 = 0$ and $x_3 = 20$, $x_4 = 12$, and $x_5 =16$, with a value of the objective function of $0$. Now, we pick $x_1$ as our non basic variable in the simplex method. Of all of our $\Delta$ values, we get that the smallest corresponds to $x_4$, so, we pivot to $x_4$ from $x_1$. This gets us that we want to maximize $216 - 18x_4 +12.5x_2$ subject to the constraints:
+
+\begin{align*}
+x_3 & = 8+ x_4 - x_2\\
+x_1 & = 12 + x_4 \\
+x_5 & = 16 - x_2\\
+x_1,x_2,x_3,x_4,x_5 &\ge 0
+\end{align*}
+
+Then, we need to select $x_2$ as our non-basic variable, which gets us that we should pivot to $x_3$, which gets us that the objective is $316 -5.5 x_4 - 12.5 x_3$ and the constraints are
+
+\begin{align*}
+x_2 & = 8+ x_4 - x_3\\
+x_1 & = 12 + x_4 \\
+x_5 & = 8 - x_4 + x_3\\
+x_1,x_2,x_3,x_4,x_5 &\ge 0
+\end{align*}
+
+We now stop since no more non-basic variables appear in the objective with a positive coefficient. Our solution is $(12,8,0,0,8)$ and has a value of $316$. Going back to the standard form we started with, we just disregard the values of $x_3$ through $x_5$ and have the solution that $x_1 = 12$ and $x_2 = 8$. We can check that this is both feasible and has the objective achieve 316.\\
+
+\noindent\textbf{Exercise 29.3-6}\\
+
+The first step is to convert the linear program into slack form.  We'll introduce the slack variables $x_3$ and $x_4$.  We have:
+
+\begin{align*}
+z &= 5x_1 - 3x_2\\
+x_3 &= 1 - x_1 + x_2 \\
+x_4 &= 2 - 2x_1 - x_2. \\
+\end{align*}
+
+The nonbasic variables are $x_1$ and $x_2$.  Of these, only $x_1$ has a positive coefficient in the objective function, so we must choose $x_e = x_1$. Both equations limit $x_1$ by 1, so we'll choose the first one to rewrite $x_1$ with. Using $x_1 = 1 - x_3+ x_2$ we obtain the new system
+
+\begin{align*}
+z &= 5 - 5x_3 + 2x_2\\
+x_1 &= 1 - x_3+ x_2 \\
+x_4 &= 2x_3 - 2x_2. \\
+\end{align*}
+
+Now $x_2$ is the only nonbasic variable with positive coefficient in the objective function, so we set $x_e = x_2$.  The last equation limits $x_2$ by 0 which is most restrictive, so we set $x_2 = x_3 - \frac{x_4}{2}$.  Rewriting, our new system becomes
+
+\begin{align*}
+z &= 5 - 3x_3 - x_4\\
+x_1 &= 1 - \frac{x_4}{2} \\
+x_2 &= x_3 - \frac{x_4}{2} . \\
+\end{align*}
+
+Every nonbasic variable now has negative coefficient in the objective function, so we take the basic solution $(x_1,x_2,x_3,x_4) = (1,0,0,0)$. The objective value this achieves is 5. \\
+
+
+\noindent\textbf{Exercise 29.3-7}\\
+
+First, we convert this equation to the slack form. Doing so doesn't change the objective, but the constraints become
+
+\begin{align*}
+x_4 & = -10000 + 2x_1 + 7.5x_2 + 3x_3\\
+x_5 & = -30000 + 20x_1 + 5x_2 + 10x_3 \\
+x_1,x_2,x_3,x_4,x_5 &\ge 0
+\end{align*}
+
+Also, since the objective is to minimize a given function, we'll change it over to maximizing the negative of that function. In particular maximize $-x_1 -x_2 -x_3$. Now, we note that the initial basic solution is not feasible, because it would leave $x_4$ and $x_5$ being negative. This means that finding an initial solution requires using the method of section 29.5. The auxiliary linear program is
+
+\begin{align*}
+\hbox{maximize } &-x_4-x_5\\ 
+x_4 & \ge -10000 + 2x_1 + 7.5x_2 + 3x_3\\
+x_5 & \ge -30000 + 20x_1 + 5x_2 + 10x_3 \\
+x_1,x_2,x_3,x_4,x_5 &\ge 0
+\end{align*}
+
+If we can get a solution to the auxiliary that achieves the objective being zero, then, we will have our initial solution for the simplex method. One such solution is $x_1 = 5000$, $x_2=x_3=x_4=x_5=0$.
+
+%notdone
+
+\noindent\textbf{Exercise 29.3-8}\\
+
+Consider the simple program
+
+\begin{align*}
+z &= -x_1\\
+x_2 &= 1 - x_1. \\
+\end{align*}
+
+In this case we have $m = n = 1$, so ${m+n \choose n} = {2 \choose 1} = 2$, however, since the only coefficients of the objective function are negative, we can't make any other choices for basic variable.  We must immediately terminate with the basic solution $(x_1,x_2) = (0,1)$, which is optimal. \\
+
+\noindent\textbf{Exercise 29.4-1}\\
+
+By just transposing $A$, swapping $b$ and $c$, and switching the maximization to a minimization, we want to minimize $20y_1 + 12 y_2 + 16 y_3$ subject to the constraints 
+\begin{align*}
+y_1 + y_2 &\ge 18\\
+y_1 + y_3 &\ge 12.5\\
+y_1,y_2,y_3 &\ge 0
+\end{align*}
+
+\noindent\textbf{Exercise 29.4-2}\\
+
+By working through each aspect of putting a general linear program into standard form, as outlined on page 852, we can show how to deal with transforming each into the dual individually.  \\
+%Need to come back to and figure out how to handle the absence of nonnegativity constraints.
+
+\noindent\textbf{Exercise 29.4-3}\\
+
+%Boo! You never mention how to interpret this formulation as a minimum cut problem!
+
+First, we'll convert the linear program for maximum flow described in equation (29.47)-(29.50) into standard form. The objective function says that $c$ is a vector indexed by a pair of vertices, and it is positive one if $s$ is the first index and negative one if $s$ is the second index (zero if it is both). Next, we'll modify the constraints by switching the equalities over into inequalities to get
+
+\begin{align*}
+f_{u,v} &\le c(u,v) &\hbox{ for each $u,v\in V$}\\
+\sum_{u\in V} f_{vu} &\le \sum_{u\in V} f_{uv}  &\hbox{ for each $v\in V - \{s,t\}$}\\
+\sum_{u\in V} f_{vu} &\ge \sum_{u\in V} f_{uv}  &\hbox{ for each $v\in V - \{s,t\}$}\\
+f_{u,v} &\ge 0 &\hbox{ for each $u,v\in V$}\\
+\end{align*}
+
+Then, we'll convert all but the last set of the inequalities to be $\le$ by multiplying the third line by $-1$.
+
+\begin{align*}
+f_{u,v} &\le c(u,v) &\hbox{ for each $u,v\in V$}\\
+\sum_{u\in V} f_{vu} &\le \sum_{u\in V} f_{uv}  &\hbox{ for each $v\in V - \{s,t\}$}\\
+\sum_{u\in V} -f_{vu} &\le \sum_{u\in V} -f_{uv}  &\hbox{ for each $v\in V - \{s,t\}$}\\
+f_{u,v} &\ge 0 &\hbox{ for each $u,v\in V$}\\
+\end{align*}
+
+Finally, we'll bring all the variables over to the left to get
+
+\begin{align*}
+f_{u,v} &\le c(u,v) &\hbox{ for each $u,v\in V$}\\
+\sum_{u\in V} f_{vu} -\sum_{u\in V} f_{uv}&\le 0  &\hbox{ for each $v\in V - \{s,t\}$}\\
+\sum_{u\in V} -f_{vu} - \sum_{u\in V} -f_{uv}&\le 0  &\hbox{ for each $v\in V - \{s,t\}$}\\
+f_{u,v} &\ge 0 &\hbox{ for each $u,v\in V$}\\
+\end{align*}
+
+Now, we can finally write down our $A$ and $b$. $A$ will be a $|V|^2 \times |V|^2 + 2|V| -4$ matrix built from smaller matrices $A_1$ and $A_2$ which correspond to the three types of constraints that we have (of course, not counting the non-negativity constraints). We will let $g(u,v)$ be any bijective mapping from $V\times V$ to $\left[|V|^2\right]$. We'll also let $h$ be any bijection from $V- \{s,t\}$ to $[|V|-2]$
+
+\[
+A = \left(\begin{array}{c}
+A_1\\
+A_2\\
+-A_2
+\end{array}\right)
+\]
+
+Where $A_1$ is defined as having its row $g(u,v)$ be all zeroes except for having the value $1$ at at the $g(u,v)$th entry. We define $A_2$ to have it's row $h(u)$ be equal to $1$ at all columns $j$ for which $j=g(v,u)$ for some $v$ and equal to $-1$ at all columns $j$ for which $j= g(u,v)$ for some $v$. Lastly, we mention that $b$ is defined as having it's $j$th entry be equal to $c(u,v)$ if $j =g(u,v)$ and zero if $j > |V|^2$.
+
+Now that we have placed the linear program in standard form, we can take its dual. We want to minimize $\sum_{i=1}^{|V|^2+2|V|-2} b_i y_i$ given the constraints that all the $y$ values are non-negative, and $A^T y \ge c$.\\
+
+\noindent\textbf{Exercise 29.4-4}\\
+
+First we need to put the linear programming problem into standard form, as follows:
+
+\begin{align*}
+\mbox{maximize \,\,\,} & \sum_{(u,v) \in E} -a(u,v)f_{uv}\\
+\mbox{subject to \,} & f_{uv} \leq c(u,v) \mbox{ for each } u,v \in V \\
+& \sum_{v \in V} f_{vu} - \sum_{v \in V} f_{uv} \leq 0 \mbox{ for each } u \in V - \{s,t\} \\
+& \sum_{v \in V} f_{uv} - \sum_{v \in V} f_{vu} \leq 0 \mbox{ for each } u \in V - \{s,t\} \\
+& \sum_{v \in V} f_{sv} - \sum_{v \in V} f_{vs} \leq d \\
+& \sum_{v \in V} f_{vs} - \sum_{v \in V} f_{sv} \leq -d \\ 
+& f_{uv} \geq 0.\\
+\end{align*}
+
+We now formulate the dual problem.  Let the vertices be denoted $v_1, v_2, \ldots, v_n, s, t$ and the edges be $e_1, e_2, \ldots, e_k$.  Then we have $b_i = c(e_i)$ for $1 \leq i \leq k$, $b_i = 0$ for $k+1 \leq i \leq k+2n$, $b_{k+2n+1} = d$, and $b_{k+2n+2} = -d$. We also have $c_i = -a(e_i)$ for $1 \leq i \leq k$.  For notation, let $j.left$ denote the tail of edge $e_j$ and $j.right$ denote the head.  Let $\chi_s(e_j) = 1$ if $e_j$ enters $s$, set it equal to -1 if $e_j$ leaves $s$, and set it equal to $0$ if $e_j$ is not incident with $s$.  The dual problem is:
+
+\begin{align*}
+\mbox{minimize \,\,\,} & \sum_{i=1}^k c(e_i)y_i + dy_{k+2n+1} - dy_{k+2n+2}\\
+\mbox{subject to \,} & y_j + y_{k+e_j.right} - y_{k+j.left} - y_{k+n+e_j.right} + y_{k + n + e_j.left} \\
+& - \chi_s(e_j)y_{k+2n+1} + \chi_s(e_j) y_{k+2n+2} \geq -a(e_j)
+\end{align*}
+where $j$ runs between 1 and $k$.  There is one constraint equation for each edge $e_j$. 
+
+%Need to figure out the y_i's!!
+
+\noindent\textbf{Exercise 29.4-5}\\
+
+Suppose that our original linear program is in standard form for some $A,b,c$. Then, the dual of this is to minimize $\sum_{i=1}^m b_i y_i$ subject to $A^T y \ge c$ This can be rewritten as wanting to maximize $\sum_{i=1}^m (-b_i) y_i$ subject to $(-A)^T y \le -c$. Since this is a standard form, we can take its dual easily, it is minimize $\sum_{j=1}^n (-c_j) x_j$ subject to $(-A)x \ge -b$. This is the same as minimizing $\sum_{j=1}^n c_j x_j$ subject to $Ax \le b$, which was the original linear program.\\
+
+\noindent\textbf{Exercise 29.4-6}\\
+
+Corollary 26.5 from Chapter 26 can be interpreted as weak duality. \\
+
+\noindent\textbf{Exercise 29.5-1}\\
+%not done
+
+\noindent\textbf{Exercise 29.5-2}\\
+
+In order to enter line 10 of INITIALIZE-SIMPLEX and begin iterating the main loop of SIMPLEX, we must have recovered a basic solution which is feasible for $L_{aux}$. Since $x_0 \geq 0$ and the objective function is $-x_0$, the objective value associated to this solution (or any solution) must be negative. Since the goal is to aximize, we have an upper bound of 0 on the objective value. By Lemma 29.2, SIMPLEX correctly determines whether or not the input linear program is unbounded.  Since $L_{aux}$ is not unbounded, this can never be returned by SIMPLEX. \\
+
+\noindent\textbf{Exercise 29.5-3}\\
+
+Since it is in standard form, the objective function has no constant term, it is entirely given by $\sum_{i=1}^n c_i x_i$, which is going to be zero for any basic solution. The same thing goes for its dual. Since there is some solution which has the objective function achieve the same value both for the dual and the primal, by the corollary to the weak duality theorem, that common value must be the optimal value of the objective function.\\
+
+\noindent\textbf{Exercise 29.5-4}\\
+
+Consider the linear program in which we wish to maximize $x_1$ subject to the constraint $x_1 < 1$ and $x_1 \geq 0$.  This has no optimal solution, but it is clearly bounded and has feasible solutions. Thus, the Fundamental theorem of linear programming does not hold in the case of strict inequalities. \\
+
+\noindent\textbf{Exercise 29.5-5}\\
+%notdone
+
+\noindent\textbf{Exercise 29.5-6}\\
+
+The initial basic solution isn't feasible, so we will need to form the auxiliary linear program:
+
+\begin{align*}
+\mbox{maximize \,\,\,} & -x_0\\
+\mbox{subject to \,} &x_1 + x_2 - x_0 \leq 4 \\
+& -2x_1 - 6x_2 - x_0 \leq -12\\
+& x_2 - x_0 \leq 1 \\
+& x_1,x_2,x_0 \geq 0.
+\end{align*}
+
+The we write this linear program in slack form:
+
+\begin{align*}
+z &= -x_0\\
+x_3 &= 4 - x_1 - x_2 + x_0  \\
+x_4 &= -12 + 2x_1 + 6x_2 + x_0 \\
+x_5 &= 1 - x_2 + x_0. \\
+\end{align*}
+
+Next we make one call to PIVOT where $x_0$ is the entering variable and $x_4$ is the leaving variable. This gives:
+
+\begin{align*}
+z &= -12 + 2x_1 + 6x_2 - x_4\\
+x_3 &= 16 - 3x_1 - 7x_2 + x_4  \\
+x_0 &= 12 + x_4 - 2x_1 - 6x_2 \\
+x_5 &= 13 - 2x_1 - 8x_2 + x_4. \\
+\end{align*}
+
+The basic solution is $(x_0,x_1,x_2,x_3,x_4,x_5) = (12, 0,0,16,0,13)$ which is feasible for the auxiliary program.  Now we need to run SIMPLEX to find the optimal objective value to $L_{aux}$.  Let $x_1$ be our next entering variable.  It is most constrainted by $x_3$, which will be our leaving variable.  After PIVOT, the new linear program is
+
+\begin{align*}
+z &= -4/3 - (4/3)x_2 - (2/3)x_3 - (1/3)x_4 \\
+x_1 &= 16/3 - (7/3)x_2 - (1/3)x_3 + (1/3)x_4  \\
+x_0 &= 4/3 - (4/3)x_2 + (2/3)x_3 + (1/3)x_4 \\
+x_5 &= 7/3 - (10/3)x_2 + (2/3)x_3 + (1/3)x_4. \\
+\end{align*}
+
+Every coefficient in the objective function is negative, so we take the basic solution $(x_0,x_1,x_2,x_3,x_4,x_5) = (4/3, 16/3, 0,0,0,7/3)$ which is also optimal.  Since $x_0 \neq 0$, the original linear program must be infeasible. \\
+
+\noindent\textbf{Exercise 29.5-7}\\
+%notdone
+
+\noindent\textbf{Exercise 29.5-8}\\
+
+We first put the linear program in standard form:
+
+\begin{align*}
+\mbox{maximize \,\,\,} & x_1 + x_2 + x_3 + x_4 \\
+\mbox{subject to \,} & 2x_1 - 8x_2 - 10x_4 \leq -50 \\
+& -5x_1 - 2x_2 \leq -100 \\
+& -3x_1 + 5x_2 - 10x_3 + 2x_4 \leq -25\\
+& x_1,x_2,x_3,x_4 \geq 0.
+\end{align*}
+
+The initial basic solution isn't feasible, so we will need to form the auxiliary linear program.  It is given below in slack form:
+
+\begin{align*}
+z &=-x_0 \\
+x_5 &=-50 - 2x_1 + 8x_2 + 10x_4 + x_0  \\
+x_6 &= -100 + 5x_1 + 2x_2 + x_0\\
+x_7 &= -25 + 3x_1 - 5x_2 + 10x_3 - 2x_4 + x_0.\\
+\end{align*}
+
+The index of the minimum $b_i$ is 2, so we take $x_0$ to be our entering variable and $x_6$ to be our leaving variable.  The call to PIVOT on line 8 yields
+
+\begin{align*}
+z &=  -100 + 5x_1 + 2x_2 - x_6 \\
+x_5 &=50 - 7x_1 + 8x_2 + 10x_4 + x_6  \\
+x_0 &= 100 - 5x_1 - 2x_2 + x_6\\
+x_7 &= 75 - 2x_1 - 7x_2 + 10x_3 - 2x_4 + x_6.\\
+\end{align*}
+
+Next we'll take $x_2$ to be our entering variable and $x_5$ to be our leaving variable.  The call to PIVOT yields
+
+\begin{align*}
+z &=  -225/2 + (27/4)x_1 - (10/4)x_4 + (1/4)x_5 - (5/4)x_6 \\
+x_2 &= -50/8 + (7/8)x_1 - (10/8)x_4 + (1/8)x_5 - (1/8)x_6  \\
+x_0 &= 225/2 - (27/4)x_1 + (10/4)x_4 - (1/4)x_5 + (5/4)x_6\\
+x_7 &= 475/4 - (65/8)x_1 + 10x_3 + (54/8)x_4 - (7/8)x_5 + (15/8)x_6.\\
+\end{align*}
+
+The work gets rather messy, but INITIALIZE-SIMPLEX does eventually give a feasible solution to the linear program, and after running the simplex method we find that $(x_1,x_2,x_3,x_4) = (175/11,225/22,125/44,0)$ is an optimal solution to the original linear programming problem.  \\
+
+\noindent\textbf{Exercise 29.5-9}\\
+
+\begin{enumerate}[1.]
+\item
+One option is that $r= 0$, $s\ge 0$ and $t\le 0$. Suppose that $r>0$, then, if we have that $s$ is non-negative and $t$ is non-positive, it will be as we want. 
+\item
+We will split into two cases based on $r$. If $r=0$, then this is exactly when $t$ is non-positive and $s$ is non-negative.
+The other possible case is that $r$ is negative, and $t$ is positive. In which case, because $r$ is negative, we can always get $rx$ as small as we want so $s$ doesn't matter, however, we can never make $rx$ positive so it can never be $\ge t$.
+\item
+Again, we split into two possible cases for $r$. If $r=0$, then it is when $t$ is non-negative and $s$ is non-positive. The other possible case is that $r$ is positive, and $s$ is negative. Since $r$ is positive, $rx$ will always be non-negative, so it cannot be $\le s$. But since $r$ is positive, we have that we can always make $rx$ as big as we want, in particular, greater than $t$.
+\item
+If we have that $r=0$ and $t$ is positive and $s$ is negative. If $r$ is nonzero, then we can always either make $rx$ really big or really small depending on the sign of $r$, meaning that either the primal or the dual would be feasable.
+
+\end{enumerate}
+
+
+
+\noindent\textbf{Problem 29-1}\\
+
+\begin{enumerate}[a.]
+\item
+We just let the linear inequalities that we need to satisfy be our set of constraints in the linear program. We let our function to maximize just be a constant. The solver for linear programs would fail to detect any feasible solution if the linear constraints were not feasible. If the linear programming solver returns any solution at all, we know that the linear constraints are feasible. 
+\item
+\begin{comment}
+Take the constraints of the linear program together with the constraints of its dual. Together, if these constraints are satisfied, then there must be an optimal solution which is equal to any solution of all the constraints. This approach assumes that the linear feasibility tester doesn't just say whether or not the linear inequalities are all simultaneously satisfiable, but actually gives an assignment to the variables that satisfies them. We can see that if we can get all of these inequalities simultaneously satisfied, then we must have that our solution is optimal by the duality theorem, which says that the optimal solution to the linear program is also an optimal solution to the dual of the linear program.
+\end{comment}
+Suppose that we are trying to solve the linear program in standard form with some particular $A,b,c$. That is, we want to maximize $\sum_{j=1}^n c_j x_j$ subject to $Ax \le b$ and all entries of the x vector are non-negative. Now, consider the dual program, that is, we want to minimize $\sum_{i=1}^m b_i y_i$ subject to $A^T y \ge c$ and all the entries in the $y$ vector are nonzero. We know by Corollary 29.9, if $x$ and $y$ are feasible solutions to their respective problems, then, if we have that their objective functions are equal, then, they are both optimal solutions. 
+
+We can force their objective functions to be equal. To do this, let $c_k$ be some nonzero entry in the $c$ vector. If there are no nonzero entries, then the function we are trying to optimize is just the zero function, and it is exactly a feasibility question, so we we would be done. Then, we add two linear inequalities to require $x_k = \frac{1}{c_k} \left(\sum_{i=1}^m b_i y_i - \sum_{j=1}^n c_j x_j\right)$. This will require that whatever values the variables take, their objective functions will be equal. Lastly, we just throw these in with the inequalities we already had. So, the constraints will be:
+
+
+\begin{align*}
+Ax&\le b\\
+A^T y &\ge c\\
+x_k &\le \frac{1}{c_k} \left(\sum_{i=1}^m b_i y_i - \sum_{j=1}^n c_j x_j\right)\\
+x_k &\ge \frac{1}{c_k} \left(\sum_{i=1}^m b_i y_i - \sum_{j=1}^n c_j x_j\right)\\
+x_1,x_2,\ldots,x_n,y_1,y_2,\ldots y_m &\ge 0
+\end{align*}
+
+We have a number of variables equal to $n+m$ and a number of constraints equal to $2 + 2n +2m$, so both are polynomial in n and m. Also, any assignment of variables which satisfy all of these constraints will be a feasible solution to both the problem and its dual that cause the respective objective functions to take the same value, and so, must be an optimal solution to both the original problem and its dual. This of course assumes that the linear inequality feasibility solver doesn't merely say that the inequalities are satisfyable, but actually returns a satisfying assignment.
+
+Lastly, it is necessary to note that if there is some optimal solution $x$, then, we can obtain an optimal solution for the dual that makes the objective functions equal by theorem 29.10. This ensures that the two constraints we added to force the objectives of the primal and the dual to be equal don't cause us to change the optimal solution to the linear program.
+\end{enumerate}
+
+\noindent\textbf{Problem 29-2}\\
+
+\begin{enumerate}[a.]
+\item  An optimal solution to the LP program given in (29.53) - (29.57) is $(x_1,x_2,x_3) = (8,4,0)$.  An optimal solution to the dual is $(y_1,y_2,y_3) = (0,1/6,2/3)$. It is then straightforward to verify that the equations hold. 
+
+\item First suppose that complementary slackness holds.  Then the optimal objective value of the primal problem is, if it exists,
+\begin{align*}
+\sum_{k=1}^n c_kx_k &= \sum_{k=1}^n \sum_{i=1}^m a_{ik}y_i x_k \\
+&= \sum_{i=1}^m\sum_{k=1}^na_{ik}x_k y_i \\
+&= \sum_{i=1}^m b_iy_i
+\end{align*}
+which is precisely the optimal objective value of the dual problem.  If any $x_j$ is 0, then those terms drop out of them sum, so we can safely replace $c_k$ by whatever we like in those terms.  Since the objective values are equal, they must be optimal.  An identical argument shows that if an optimal solution exists for the dual problem then any feasible solution for the primal problem which satisfies the second equality of complementary slackness must also be optimal.  
+
+Now suppose that $x$ and $y$ are optimal solutions, but that complementary slackness fails.  In other words, there exists some $j$ such that $x_j \neq 0$ but $\sum_{i=1}^m a_{ij}y_i > c_j$, or there exists some $i$ such that $y_i \neq 0$ but $\sum_{j=1}^n a_{ij}x_j < b_i$.  In the first case we have
+
+\begin{align*}
+\sum_{k=1}^n c_kx_k &< \sum_{k=1}^n \sum_{i=1}^m a_{ik}y_i x_k \\
+&= \sum_{i=1}^m\sum_{k=1}^na_{ik}x_k y_i \\
+&= \sum_{i=1}^m b_iy_i.
+\end{align*}
+This implies that the optimal objective value of the primal solution is strictly less than the optimal value of the dual solution, a contradiction.  The argument for the second case is identical.  Thus, $x$ and $y$ are optimal solutions if and only if complementary slackness holds. 
+
+\item This follows immediately from part b.  If $x$ is feasible and $y$ satisfies conditions 1, 2, and 3, then complementary slackness holds, so $x$ and $y$ are optimal.  On the other hand, if $x$ is optimal, then the dual linear program must have an optimal solution $y$ as well, according to Theorem 29.10.  Optimal solutions are feasible, and by part b $x$ and $y$ satisfy complementary slackness. Thus, conditions 1, 2, and 3 hold. 
+\end{enumerate}
+
+\noindent\textbf{Problem 29-3}\\
+
+\begin{enumerate}[a.]
+\item The proof for weak duality goes through identically. Nowhere in it does it use the integrality of the solutions.
+\item Consider the linear program given in standard form by $A = \left(1\right)$, $b = \left(\frac{1}{2}\right)$ and $c = \left( 2 \right)$. The highest we can get this is $0$ since that's that only value that $x$ can be. Now, consider the dual to this, that is, we are trying to minimize $\frac{x}{2}$ subject to the constraint that $x \ge 2$. This will be minimized when $x=2$, so, the smallest solution we can get is 1.
+
+Since we have just exhibited an example of a linear program that has a different optimal solution as it's dual, the duality theorem does not hold for integer linear program.
+\item
+The first inequality comes from looking at the fact that by adding the restriction that the solution must be integer valued, we obtain a set of feasible solutions that is a subset of the feasible solutions of the original primal linear program. Since, to get $IP$, we are taking the max over a subset of the things we are taking a max over to get $P$, we must get a number that is no larger. The third inequality is similar, except since we are taking min over a subset, the inequality goes the other way.
+
+The middle equality is given by Theorem 29.10.
+\end{enumerate}
+
+\noindent\textbf{Problem 29-4} \\
+
+Suppose that both systems are solvable, let $x$ denote a solution to the first system, and $y$ denote a solution to the second. Taking transposes we have $x^TA^T \leq 0^T$.  Right multiplying by $y$ gives $x^Tc = x^TA^Ty \leq 0^T$, which is a contradiction to the fact that $c^Tx > 0$.  Thus, both systems cannot be simultaneously solved.\\
+
+%Now we need to show that at least one can be solved. We can view the second system as a linear program where the objective function is 0, so the program is not unbounded. If there are no solutions to the system, then in particular there are no feasible solutions, so by the Fundamental Theorem of linear programming, the program is infeasible.  Does this imply that the dual is feasible? 
+
+\noindent\textbf{Problem 29-5}\\
+
+\begin{enumerate}[a.]
+\item
+This is exactly the linear program given in equations (29.51) - (29.52) except that the equation on the third line of the constraints should be removed, and for the equation on the second line of the constraints, u should be selected from all of $V$ instead of from $V \setminus \{s,t\}$.
+\item
+If $a(u,v) > 0$ for every pair of vertices, then, there is no point in sending any flow at all. So, an optimal solution is just to have no flow. This obviously satisfies the capacity constraints, it also satisfies the conservation constraints because the flow into and out of each vertex is zero.
+\item
+We assume that the edge $(t,s)$ is not in $E$ because that would be a silly edge to have for a maximum flow from $s$ to $t$. If it is there, remove it and it won't decrease the maximum flow. Let $V' = V$ and $E' = E \cup \{(t,s)\}$. For the edges of $E'$ that are in $E$, let the capacity be as it is in $E$ and let the cost be 0. For the other edge, we set $c(t,s) = \infty$ and $a(t,s) = -1$. Then, if we have any circulation in $G'$, it will be trying to get as much flow to go across the edge $(t,s)$ in order to drive the objective function lower, the other flows will have no affect on the objective function. Then, by Kirchhoff's current law (a.k.a. common sense), the amount going across the edge $(t,s)$ is the same as the total flow in the rest of the network from $s$ to $t$. This means that maximizing the flow across the edge $(t,s)$ is also maximizing the flow from $s$ to $t$. So, all we need to do to recover the maximum flow for the original network is to keep the same flow values, but throw away the edge $(t,s)$.
+\item
+Suppose that $s$ is the vertex that we are computing shortest distance from. Then, we make the circulation network by first starting with the original graph, giving each edge a cost of whatever it was before and infinite capacity. Then, we place an edge going from every vertex that isn't s to $s$ that has a capacity of 1 and a cost of $-|E|$ times the largest cost appearing among all the edge costs already in the graph. Giving it such a negative cost ensures that placing other flow through the network in order to get a unit of flow across it will cause the total cost to decrease. Then, to recover the shortest path for any vertex, start at that vertex and then go to any vertex that is sending a unit of flow to it. Repeat this until you've reached $s$.
+\end{enumerate}
+
+
+
+\end{document}

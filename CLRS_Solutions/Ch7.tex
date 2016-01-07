@@ -1,0 +1,409 @@
+\documentclass{article}
+\usepackage{fancyhdr}
+\usepackage{amsthm}
+\usepackage{etoolbox}
+\usepackage{verbatim}
+\usepackage{enumerate}
+\usepackage{amsmath}
+\usepackage{algorithmicx}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{fancybox}
+\usepackage{tikz}
+
+
+	
+\pagestyle{fancy}
+\title{Chapter 7}
+\author{Michelle Bodnar, Andrew Lohr}
+
+\newcounter{curnum}
+\setcounter{curnum}{0}
+
+\newtheorem{th1}{Exercise} 
+\newcommand{\calH}{\mathcal{H}}
+\newcommand{\calX}{\mathcal{X}}
+\newcommand{\calA}{\mathcal{A}}
+\newcommand{\calY}{\mathcal{Y}}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Exercise 7.1-1}\\
+
+$
+\begin{array}{|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+13&19&9&5&12&8&7&4&21&2&6&11\\
+\hline
+13&19&9&5&12&8&7&4&21&2&6&11\\
+\hline
+13&19&9&5&12&8&7&4&21&2&6&11\\
+\hline
+9&19&13&5&12&8&7&4&21&2&6&11\\
+\hline
+9&5&13&19&12&8&7&4&21&2&6&11\\
+\hline
+9&5&13&19&12&8&7&4&21&2&6&11\\
+\hline
+9&5&8&19&12&13&7&4&21&2&6&11\\
+\hline
+9&5&8&7&12&13&19&4&21&2&6&11\\
+\hline
+9&5&8&7&4&13&19&12&21&2&6&11\\
+\hline
+9&5&8&7&4&13&19&12&21&2&6&11\\
+\hline
+9&5&8&7&4&2&19&12&21&13&6&11\\
+\hline
+9&5&8&7&4&2&6&12&21&13&19&11\\
+\hline
+9&5&8&7&4&2&6&11&21&13&19&12\\
+\hline
+\end{array}
+$
+\\
+
+
+\noindent\textbf{Exercise 7.1-2}\\
+
+If all elements in the array have the same value, PARTITION returns $r$.  To make PARTITION return $q = \lfloor(p+r)/2\rfloor$ when all elements have the same value, modify line 4 of the algorithm to say this: if $A[j] \leq x$ and $j (mod 2) = (p+1) (mod 2)$.  This causes the algorithm to treat half of the instances of the same value to count as less than, and the other half to count as greater than. \\
+
+\noindent\textbf{Exercise 7.1-3}\\
+
+The for loop makes exactly $r-p$ iterations, each of which takes at most constant time. The part outside the for loop takes at most constant time. Since $r-p$ is the size of the subarray, PARTITION takes at most time proportional to the size of the subarray it is called on.\\
+
+\noindent\textbf{Exercise 7.1-4}\\
+
+To modify QUICKSORT to run in nonincreasing order we need only modify line 4 of PARTITION, changing $\leq$ to $\geq$. \\
+
+\noindent\textbf{Exercise 7.2-1}\\
+
+By definition of $\Theta$, we know that there exists $c_1,c_2$ so that the $\Theta(n)$ term is between $c_1 n$ and $c_2 n$. We make that inductive hypothesis be that $c_1 m^2 \le T(m) \le c_2 m^2$ for all $m < n$, then, for large enough $n$, 
+\[c_1 n^2 \le c_1 (n-1)^2 + c_1 n \le T(n-1) + \Theta(n)\] \[= T(n) = T(n-1) + \Theta(n) \le c_2 (n-1)^2 +c_2 n \le c_2 n^2\]\\
+
+
+\noindent\textbf{Exercise 7.2-2}\\
+
+The running time of QUICKSORT on an array in which evey element has the same value is $n^2$.  This is because the partition will always occur at the last position of the array (Exercise 7.1-2) so the algorithm exhibits worst-case behavior. \\
+
+\noindent\textbf{Exercise 7.2-3}\\
+
+If the array is already sorted in decreasing order, then, the pivot element is less than all the other elements. The partition step takes $\Theta(n)$ time, and then leaves you with a subproblem of size $n-1$ and a subproblem of size 0. This gives us the recurrence considered in 7.2-1. Which we showed has a solution that is $\Theta(n^2)$.\\
+
+\noindent\textbf{Exercise 7.2-4}\\
+
+Let's say that by ``almost sorted'' we mean that $A[i]$ is at most $c$ positions from its correct place in the sorted array, for some constant $c$. For INSERTION-SORT, we run the inner-while loop at most $c$ times before we find where to insert $A[j]$ for any particular iteration of the outer for loop.  Thus the running time time is $O(cn) = O(n)$, since $c$ is fixed in advance.  Now suppose we run QUICKSORT.  The split of PARTITION will be \emph{at best} $n-c$ to $c$, which leads to $O(n^2)$ running time. \\
+
+\noindent\textbf{Exercise 7.2-5}\\
+
+The minimum depth corresponds to repeatedly taking the smaller subproblem, that is, the branch whoose size is proportional to $\alpha$. Then, this will fall to 1 in $k$ steps where $1 \approx (\alpha)^k n$. So, $k \approx \log_{\alpha}(1/n) = - \frac{\lg(n)}{\lg(\alpha)} $. The longest depth corresponds to always taking the larger subproblem. we then have and identical expression, replacing $\alpha$ with $1-\alpha$.\\
+
+\noindent\textbf{Exercise 7.2-6}\\
+
+Without loss of generality, assume that the entries of the input array are distinct.  Since only the relative sizes of the entries matter, we may assume that $A$ contains a random permutation of the numbers 1 through $n$.  Now fix $0 < \alpha \leq 1/2$.  Let $k$ denote the number of entries of $A$ which are less than $A[n]$. PARTITION produces a split more balanced than $1-\alpha$ to $\alpha$ if and only if $\alpha n \leq k \leq (1-\alpha)n$.  This happens with probability $\frac{(1-\alpha)n - \alpha n + 1}{n} = 1-2\alpha + 1/n \approx 1 - 2\alpha$.\\
+
+\noindent\textbf{Exercise 7.3-1}\\
+
+We analyize the exprected run time because it represents the more typical time cost. Also, we are doing the expected run time over the possible randomness used during computation because it can't be produced adversatially, unlike when doing expected run time over all possible inputs to the algorithm.\\
+
+\noindent\textbf{Exercise 7.3-2}\\
+
+In the worst case, RANDOM returns the index of the largest element each time it's called, so $\Theta(n)$ calls are made.  In the best case, RANDOM returns the index of the element in the middle of the array and the array has distinct elements, so $\Theta(\lg n)$ calls are made. \\
+
+\noindent\textbf{Exercise 7.4-1}\\
+
+By definition of $\Theta$, we know that there exists $c_1,c_2$ so that the $\Theta(n)$ term is between $c_1 n$ and $c_2 n$. We make that inductive hypothesis be that $c_1 m^2 \le T(m) \le c_2 m^2$ for all $m < n$, then, for large enough $n$, 
+\begin{align*}
+c_1 n^2 &\le c_1 \max_{q\in [n]} n^2 -2 n(q+2) + (q+1)^2 +(q+1)^2 + n\\
+& = \max_{q\in [n]} c_1 (n-q-2)^2 + c_1 (q+1)^2 +c_1 n\\
+& \le \max_{q\in [n]} T( n-q-2) + T(q+1) + \Theta(n) \\
+&= T(n)
+\end{align*}
+Similarly for the other direction
+\\
+
+\noindent\textbf{Exercise 7.4-2}\\
+
+We'll use the substitution method to show that the best-case running time is $\Omega(n \lg n)$.  Let $T(n)$ be the best-case time for the procedure QUICKSORT on an input of size $n$.  We have the recurrence
+\[ T(n) = \min_{1 \leq q \leq n-1} (T(q) + T(n-q-1)) + \Theta(n).\]
+Suppose that $T(n) \geq c(n\lg n + 2n)$ for some constant $c$.  Substituting this guess into the recurrence gives
+\begin{align*}
+T(n) &\geq \min_{1 \leq q \leq n-1} (cq\lg q + 2cq + c(n-q-1)\lg(n-q-1) + 2c(n-q-1)) + \Theta(n) \\
+&= \frac{cn}{2}\lg(n/2) + cn + c(n/2 - 1)\lg(n/2 - 1) + cn - 2c+ \Theta(n) \\
+&\geq (cn/2)\lg n - cn/2 + c(n/2 - 1)(\lg n - 2) + 2cn - 2c \Theta(n) \\
+&= (cn/2)\lg n - cn/2 + (cn/2)\lg n - cn - \lg n + 2 + 2cn - 2c\Theta(n) \\
+&=cn\lg n + cn/2 - \lg n + 2 - 2c + \Theta(n)
+\end{align*}
+Taking a derivative with respect to $q$ shows that the minimum is obtained when $q = n/2$.  Taking $c$ large enough to dominate the $-\lg n + 2 - 2c + \Theta(n)$ term makes this greater than $cn\lg n$, proving the bound. \\
+
+\noindent\textbf{Exercise 7.4-3}\\
+
+We will treat the given expression to be continuous in $q$, and then, any extremal values must be either adjacent to a critical point, or one of the endpoints. The second derivative with respect to $q$ is $4$, So, we have that any ciritcal points we find will be minima. The expression has a derivative with respect to q of $2q - 2 (n-q-2) = -2n + 4q +4$ which is zero when we have $2q+2 =n$. So, there will be a minima at $q= \frac{n-2}{2}$. So, the maximal values must only be the endpoints. We can see that the endpoints are equally large because at $q=0$, it is $(n-1)^2$, and at $q=n-1$, it is $(n-1)^2+ (n-n+1 -1)^2 = (n-1)^2$.
+
+
+\noindent\textbf{Exercise 7.4-4}\\
+
+We'll use the lower bound (A.13) for the expected running time given in the section:
+\begin{align*}
+E[X] &= \sum_{i=1}^{n-1}\sum_{j=i+1}^n \frac{2}{j-i+1} \\
+&= \sum_{i=1}^{n-1} \sum_{k=1}^{n-i} \frac{2}{k} \\
+&\geq \sum_{i=1}^{n-1} 2\ln(n-i+1) \\
+&= 2\ln\left(\prod_{i=1}^{n-1} n-i+1\right) \\
+&= 2\ln(n!) \\
+&= \frac{2}{\lg e} \lg(n!)
+&\geq cn \lg n
+\end{align*}
+for some constant $c$ since $\lg(n!) = \Theta(n \lg n)$ by Exercise 3.2-3. Therefore RANDOMIZED-QUICKSORT's expected running time is $\Omega(n \lg n)$. \\
+
+\noindent\textbf{Exercise 7.4-5}\\
+
+If we are only doing quick-sort until the problem size becomes $\le k$, then, we will have to take $\lg(n/k)$ steps, since, as in the original analysis of randomized quick sort, we expect there to be $\lg(n)$ levels to the recursion tree. Since we then just call quicksort on the entire array, we know that each element is within $k$ of its final position. This means that an insertion sort will take the shifting of at most $k$ elements for every element that needed to change position. This gets us the running time described.
+
+In theory, we should pick $k$ to minimze this expression, that is, taking a derivative with respect to $k$, we want it to be evaluating to zero. So, $n - \frac{n}{k} =0$, so $k \sim \frac{1}{n^2} $. The constant of proportianality will depend on the relative size of the constants in the $nk$ term and in the $n\lg(n/k)$ term. In practice, we would try it with a large number of input sizes for various values of $k$, because there are gritty properites of the machine not considered here such as cache line size.
+\\
+
+\noindent\textbf{Exercise 7.4-6}\\
+
+For simplicity of analysis, we will assume that the elements of the array $A$ are the numbers 1 to $n$.  If we let $k$ denote the median value, the probability of getting at worst an $\alpha$ to $1-\alpha$ split is the probability that $\alpha n \leq k \leq (1-\alpha)n$.  The number of ``bad'' triples is equal to the number of triples such that at least two of the numbers come from $[1,\alpha n]$ or at least two of the numbers come from $[(1-\alpha)n, n]$.  Since both intervals have the same size, the probability of a bad triple is $2(\alpha^3 +3\alpha^2(1-\alpha))$.  Thus the probability of selecting a ``good'' triple, and thus getting at worst an $\alpha$ to $1-\alpha$ split, is $1 - 2(\alpha^3 +3\alpha^2(1-\alpha)) = 1 + 4\alpha^3 - 6\alpha^2$.
+
+\noindent\textbf{Problem 7-1}\\
+
+\begin{enumerate}[a.]
+\item
+We will be calling with the parameters $p=1$, $r=|A|=12$. So, throughout, $x=13$.
+ 
+$
+\begin{array}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+&&&&&&&&&&&&i&j\\
+\hline
+13&19&9&5&12&8&7&4&11&2&6&21&0&13\\
+\hline
+6&19&9&5&12&8&7&4&11&2&13&21&1&11\\
+\hline
+6&13&9&5&12&8&7&4&11&2&19&21&2&10\\
+\hline
+6&13&9&5&12&8&7&4&11&2&19&21&10&2\\
+\hline
+\end{array}
+$
+
+And we do indeed see that partition has moved the two elements that are bigger than the pivot, 19 and 21, to the two final positions in the array.
+
+\item
+We know that at the beginning of the loop, we have that $i<j$, because it is true initially so long as $|A|\ge 2$. And if it were to be untrue at some iteration, then we would of left the loop in the prior iteration. To show that we won't access outside of the array, we need to show that at the beginning of every run of the loop, there is a $k>i$ so that $A[k]\ge x$, and a $k'<j$ so that $A[j']\le x$. This is clearly true because initially $i$ and $j$ are outside the bounds of the array, and so the element $x$ must be between the two. Since $i<j$, we can pick $k=j$, and $k' =i$. The elements $k$ satisfies the desired relation to $x$, because the element at position $j$ was the element at position $i$ in the prior iteration of the loop, prior to doing the exchange on line 12. Similarly, for $k'$.
+
+\item
+
+If there is more than one run of the main loop, we have that $j<r$ because it decreases by at least one with every iteration.
+
+Note that at line 11 in the first run of the loop, we have that $i=1$ because $A[p] =x \ge x$. So, if we were to terminate after a single iteration of the main loop, we must also have that $j=1 <p$.
+
+\item
+
+We will show the loop invariant that all the elements in $A[p .. i]$ are less than or equal to x which is less than or equal to all the elements of $A[j..r]$. It is trivially true prior to the first iteration because both of these sets of elements are empty. Suppose we just finished an iteration of the loop during which $j$ went from $j_1$ to $j_2$, and $i$ went from $i_1$ to $i_2$. All the elements in $A[i_1 +1 .. i_2-1]$ were $<x$, because they didn't cause the loop on lines $8-10$ to terminate. Similarly, we have that all the elements in $A[j_2+1 .. j_1-1]$ were $>x$. We have also that $A[i_2] \le x \le A[j_2]$ after the exchange on line 12. Lastly, by induction, we had that all the elements in $A[p .. i_1]$ are less than or equal to $x$, and all the elements in $A[j_1 .. r]$ are greater than or equal to x. Then, putting it all together, since $A[p ..i_2] = A[p..i_1] \cup A[i_1+1 .. i_2-1] \cup \{A[i_2]\}$ and $A[j_2 .. r] = \cup \{A[j_2]\} \cup A[j_2+1..j_1-1] \cup A[j_1 .. r]$, we have the desired inequality. Since at termination, we have that $i\ge j$, we know that $A[p..j]\subseteq A[p..i]$, and so, every element of $A[p..j]$ is less than or equal to $x$, which is less than or equal to every element of $A[j+1..r]\subseteq A[j..r]$.
+
+\item
+
+After running Hoare-partition, we don't have the guarentee that the pivot value will be in the position $j$, so, we will scan through the list to find the pivot value, place it between the two subarrays, and recurse
+
+\begin{algorithm}
+Quicksort(A,p,r)
+\begin{algorithmic}[1]
+\If{$p<r$}
+\State $x = A[p]$
+\State $q = HoarePartition(A,p,r)$
+\State $i=0$
+\While{$A[i]\neq x$}
+\State $i=i+1$
+\EndWhile
+\If{$i\le q$}
+\State exchange $A[i]$ and $A[q]$
+\Else
+\State exchange $A[i]$ and $A[q+1]$
+\State $q = q+1$
+\EndIf
+\State Quicksort(A,p,q-1)
+\State Quicksort(A,q+1,r)
+\EndIf
+\end{algorithmic}
+\end{algorithm}
+
+\end{enumerate}
+
+\noindent\textbf{Problem 7-2}\\
+\begin{enumerate}[a.]
+\item  Since all elements are the same, the initial random choice of index and swap change nothing.  Thus, randomized quicksort's running time will be the same as that of quicksort.  Since all elements are equal, PARTITION$(A,P,r)$ will always return $r-1$.  This is worst-case partitinoing, so the runtime is $\Theta(n^2)$. \\
+
+\item  See the PARTITION' algorithm for modifications.
+\begin{algorithm}
+\caption{PARTITION'(A,p,r)}
+\begin{algorithmic}[1]
+\State $x = A[r]$
+\State exchange $A[r]$ with $A[p]$
+\State $i=p-1$
+\State $k = p$
+\For{$j=p+1$ to $r-1$}
+	\If{$A[j] < x$}
+		\State $i=i+1$
+		\State $k = i+2$
+		\State exchange $A[i]$ with $A[j]$
+		\State exchange $A[k]$ with $A[j]$
+	\EndIf
+	\If{$A[j] = x$}
+		\State $k = k+1$
+		\State exchange $A[k]$ with $A[j]$
+	\EndIf
+\EndFor
+\State exchange $A[i+1]$ with $A[r]$
+\State \Return $i+1$ and $k+1$
+\end{algorithmic}
+\end{algorithm}
+
+
+\item See the RANDOMIZED-PARTITION' algorithm for modifications.  
+\begin{algorithm}
+\caption{RANDOMIZED-PARTITION'}
+\begin{algorithmic}[1]
+\State $i=RANDOM(p,r)$
+\State exchange $A[r]$ with $A[i]$
+\State \Return PARTITION'(A,p,r)
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+\caption{QUICKSORT'(A,p,r)}
+\begin{algorithmic}[1]
+\If{$p<r$}
+	\State $(q,t) = RANDOMIZED-PARTITION'$
+	\State QUICKSORT'(A,p,q-1)
+	\State QUICKSORT'(A,t+1,r)
+\EndIf
+\end{algorithmic}
+\end{algorithm}
+
+\item Let $d$ be the number of distinct elements in $A$.  The running time is dominated by the time spent in the PARTITION procedure, and there can be at most $d$ calls to PARTITION.  If $X$ is the number of comparisons performed in line 4 of PARTITION over the entire execution of QUICKSORT', then the running time is $O(d+X)$. It remains true that each pair of elements is compared at most once. If $z_i$ is the $i^{th}$ smallest element, we need to compute the probability that $z_i$ is compared to $z_j$. This time, once a pivot $x$ is chosen with $z_i \leq x \leq z_j$, we know that $z_i$ and $z_j$ cannot be compared at any subsequent time. This is where the analysis differs, because there could be many elements of the array equal to $z_i$ or $z_j$, so the probability that $z_i$ and $z_j$ are compared decreases. However, the expected percentage of distinct elements in a random array tends to $1-\frac{1}{e}$, so asymptotically the expected number of comparisons is the same. 
+\end{enumerate}
+
+\noindent\textbf{Problem 7-3}\\
+\begin{enumerate}[a.]
+\item
+Since the pivot is selected as a ranom element in the array, which has size $n$, the probabilities of any particular element being selected are all equal, and add to one, so, are all $\frac{1}{n}$. As such, $E[X_i] = \Pr[\hbox{i smallest is picked }] = \frac{1}{n}$.
+
+\item
+We can apply linearity of expectation over all of the events $X_i$. Suppose we have a particular $X_i$ be true, then, we will have one of the sub arrays be length $i-1$, and the other be $n-i$, and will of couse still need linear time to run the partition procedure. This corresponds exactly to the summand in equation $(7.5)$.
+
+\item
+\[
+E\left[\sum_{q=1}^{n}X_q(T(q-1) + T(n-q) + \Theta(n))\right] = \sum_{q=1}^{n} E\left[X_q(T(q-1) + T(n-q) + \Theta(n))\right] \]\[= \sum_{q=1}^{n}(T(q-1) + T(n-q) + \Theta(n))/n = \Theta(n) +  \frac{1}{n} \sum_{q=1}^{n}(T(q-1) + T(n-q) ) \]\[= \Theta(n) + \frac{1}{n} \left(  \sum_{q=1}^{n}T(q-1) +  \sum_{q=1}^{n}T(n-q)\right) \]\[= \Theta(n) + \frac{1}{n} \left(  \sum_{q=1}^{n}T(q-1) +  \sum_{q=1}^{n}T(q-1)\right) = \Theta(n) + \frac{2}{n} \sum_{q=1}^{n}T(q-1) \]\[= \Theta(n) + \frac{2}{n} \sum_{q=0}^{n-1}T(q) = \Theta(n) + \frac{2}{n} \sum_{q=2}^{n-1}T(q)\]
+
+\item
+
+We will prove this inequality in a different way than suggested by the hint. If we let $f(k) = k\lg(k)$ treated as a continuous function, then $f'(k) = \lg(k) + 1$. Note now that the summation written out is the left hand approximation of the integral of $f(k)$ from 2 to $n$ with step size 1. By integration by parts, the antiderivative of $k\lg k$ is 
+\[
+\frac{1}{\ln(2)}\left(\frac{k^2}{2}\ln(k) - \frac{k^2}{4} \right)
+\]
+So, plugging in the bounds and subtracting, we get $\frac{n^2 \lg(n)}{2} - \frac{n^2}{4\ln(2)} - 1$. Since $f$ has a positive derivative over the entire interval that the integral is being evaluated over, the left hand rule provides a underapproximation of the integral, so, we have that 
+\[
+\sum_{k=2}^{n-1} k\lg(k) \le \frac{n^2 \lg(n)}{2} - \frac{n^2}{4\ln(2)} - 1 \le \frac{n^2 \lg(n)}{2} - \frac{n^2}{8} 
+\]
+where the last inequality uses the fact that $\ln(2)>1/2$.
+
+\item
+Assume by induction that $T(q) \le q\lg(q)+\Theta(n)$. Combining (7.6) and (7.7), we have
+\[
+E[T(n)] = \frac{2}{n} \sum_{q=2}^{n-1} E[T(q)] + \Theta(n) \le \frac{2}{n} \sum_{q=2}^{n-1} (q\lg(q) + Theta(n)) + \Theta(n) \]\[\le \frac{2}{n} \sum_{q=2}^{n-1} (q\lg(q)) + \frac{2}{n}(n\Theta(n)) + \Theta(n)\]\[   \le \frac{2}{n} (\frac{1}{2} n^2 \lg(n) -\frac{1}{8} n^2) + \Theta(n) = n\lg(n) - \frac{1}{4} n+ \Theta(n) = n\lg(n) +\Theta(n)
+\]
+
+\end{enumerate}
+
+\noindent\textbf{Problem 7-4}\\
+
+\begin{enumerate}[a.]
+\item We'll proceed by induction.  For the base case, if $A$ contains 1 element then $p = r$ so the algorithm terminates immediately, leave a single sorted element.  Now suppose that for $1 \leq k \leq n-1$, TAIL-RECURSIVE-QUICKSORT correctly sorts an array $A$ containing $k$ elements. Let $A$ have size $n$.  We set $q$ equal to the pivot and by the induction hypothesis, TAIL-RECURSIVE-QUICKSORT correctly sorts the left subarray which is of strictly smaller size.  Next, $p$ is updated to $q+1$ and the exact same sequence of steps follows as if we had originally called TAIL-RECURSIVE-QUICKSORT(A,q+1,n).  Again, this array is of strictly smaller size, so by the induction hypothesis it correctly sorts $A[q+1...n]$ as desired. \\
+
+\item The stack depth will be $\Theta(n)$ if the input array is already sorted. The right subarray will always have size 0 so there will be $n-1$ recursive calls before the while-condition $p<r$ is violated. \\
+
+\item We modify the algorithm to make the recursive call on the smaller subarray to avoid building pushing too much on the stack:
+
+\begin{algorithm}
+\caption{MODIFIED-TAIL-RECURSIVE-QUICKSORT(A,p,r)}
+\begin{algorithmic}[1]
+\While{$p<r$}
+	\State $q = $PARTITION$(A,p,r)$
+	\If{$q < \lfloor(r-p)/2\rfloor$}
+		\State MODIFIED-TAIL-RECURSIVE-QUICKSORT$(A,p,q-1)$
+		\State $p = q+1$
+	\Else
+		\State MODIFIED-TAIL-RECURSIVE-QUICKSORT$(A,q+1,r)$
+		\State $r = q-1$
+	\EndIf
+\EndWhile
+\end{algorithmic}
+\end{algorithm}
+\end{enumerate}
+
+\noindent\textbf{Problem 7-5}\\
+\begin{enumerate}[a.]
+\item
+$p_i$ is the probability that a randomly selected subset of size three has the $A'[i]$ as it's middle element. There are $6$ possible orderings of the three elements selected. So, suppose that $S'$ is the set of three elements selected. We will compute the probability that the second element of $S'$ is $A'[i]$ among all possible 3-sets we can pick, since there are exactly six ordered 3-sets corresponding to each 3-set, these probabilities will be equal. We will compute the probability that $S'[2] = A'[i]$. For any such $S'$, we would need to select the first element from $[i-1]$ and the third from $\{i+1,\ldots,n\}$. So, there are $(i-1)(n-i)$ such 3-sets. The total number of 3-sets is $\binom{n}{3} = \frac{n(n-1)(n-2)}{6}$. So, 
+\[
+p_i = \frac{6(n-i)(i-1)}{n(n-1)(n-2)}
+\]
+
+\item
+If we let $i = \left\lfloor \frac{n+1}{2}\right\rfloor$, the previous result gets us an increase of 
+\[
+\frac{6(\left\lfloor\frac{n-1}{2}\right\rfloor)(n -\left\lfloor \frac{n+1}{2}\right\rfloor)}{n(n-1)(n-2)} - \frac{1}{n}
+\]
+in the limit $n$ going to infinity, we get
+\[
+\lim_{n\rightarrow \infty} \frac{\frac{6(\left\lfloor\frac{n-1}{2}\right\rfloor)(n -\left\lfloor \frac{n+1}{2}\right\rfloor)}{n(n-1)(n-2)}}{\frac{1}{n}} = \frac{3}{2}
+\]
+
+\item
+
+To save the messiness, suppose $n$ is a multiple of 3. We will approximate the sum as an integral, so, 
+\[
+\sum_{i=n/3}^{2n/3} p_i \approx \int_{n/3}^{2n/3} \frac{6(-x^2+nx+x-n)}{n(n-1)(n-2)}dx = \frac{6(-7n^3/81 + 3n^3/18 + 3n^2/18- n^2/3)}{n(n-1)(n-2)}
+\]
+Which, in the limit n goes to infinity, is $\frac{13}{27}$ which is a constant that is larger than $1/3$ as it was in the original ranomized quicksort implementation.
+
+\item
+Since the new algorithm always has a ``bad'' choice that is within a constant factor of the original quicksort, it will still have a reasonable probability that the randomness leads us into a bad situation, so, it will still be $n\lg n$.
+\end{enumerate}
+
+\noindent\textbf{Problem 7-6}\\
+\begin{enumerate}[a.]
+\item Our algorithm will be essentially the same as the modified randomized quicksort written in problem 2.  We sort the $a_i$'s, but we replace the comparison operators to check for overlapping intervals.  The only modifications needed are made in PARTITION, so we will just rewrite that here.  For a given element $x$ in position $i$, we'll use $x.a$ and $x.b$ to denote $a_i$ and $b_i$ respectively.
+
+\begin{algorithm}
+\caption{FUZZY-PARTITION(A,p,r)}
+\begin{algorithmic}[1]
+\State $x = A[r]$
+\State exchange $A[r]$ with $A[p]$
+\State $i=p-1$
+\State $k = p$
+\For{$j=p+1$ to $r-1$}
+	\If{$b_j < x.a$}
+		\State $i=i+1$
+		\State $k = i+2$
+		\State exchange $A[i]$ with $A[j]$
+		\State exchange $A[k]$ with $A[j]$
+	\EndIf
+	\If{$b_j \geq x.a$ or $a_j \leq x.b$}
+		\State $x.a = \max(a_j, x.a)$ and $x.b = \min(b_j, x.b)$
+		\State $k = k+1$
+		\State exchange $A[k]$ with $A[j]$
+	\EndIf
+\EndFor
+\State exchange $A[i+1]$ with $A[r]$
+\State \Return $i+1$ and $k+1$
+\end{algorithmic}
+\end{algorithm}
+When intervals overlap we treat them as equal elements, thus cutting down on the time required to sort.  \\
+
+\item For distinct intervals the algorithm runs exactly as regular quicksort does, so its expected runtime will be $\Theta(n \lg n)$ in general.  If all of the intervals overlap then the condition on line 12 will be satisfied for every iteration of the for loop.  Thus the algorithm returns $p$ and $r$, so only empty arrays remain to be sorted. FUZZY-PARTITION will only be called a single time, and since its runtime remains $\Theta(n)$, the total expected runtime is $\Theta(n)$.
+\end{enumerate}
+\end{document}

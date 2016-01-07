@@ -1,0 +1,412 @@
+\documentclass{article}
+\usepackage{fancyhdr}
+\usepackage{amsthm}
+\usepackage{etoolbox}
+\usepackage{verbatim}
+\usepackage{enumerate}
+\usepackage{amsmath}
+\usepackage{algorithmicx}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+
+	
+\pagestyle{fancy}
+\title{Chapter 2}
+\author{Michelle Bodnar, Andrew Lohr}
+
+\newcounter{curnum}
+\setcounter{curnum}{0}
+
+\newtheorem{th1}{Exercise} 
+\newcommand{\calH}{\mathcal{H}}
+\newcommand{\calX}{\mathcal{X}}
+\newcommand{\calA}{\mathcal{A}}
+\newcommand{\calY}{\mathcal{Y}}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{ Exercise 2.1-1} \\
+
+$
+\begin{array}{|c|c|c|c|c|c|}
+\hline
+31&41&59&26&41&58\\
+\hline
+31&41&59&26&41&58\\
+\hline
+31&41&59&26&41&58\\
+\hline
+26&31&41&59&41&58\\
+\hline
+26&31&41&41&59&58\\
+\hline
+26&31&41&41&58&59\\
+\hline
+\end{array}
+$ \\
+
+\noindent\textbf{ Exercise 2.1-2}\\
+
+\begin{algorithm}
+\caption{Nonincreasing Insertion-Sort(A)}
+\begin{algorithmic}[1]
+\For{$j=2$ to $A.length$}
+	\State $key = A[j]$
+	\State // Insert $A[j]$ into the sorted sequence $A[1..j-1]$.
+	\State $i=j-1$
+	\While{$i>0$ and $A[i] < key$}
+		\State $A[i+1] = A[i]$
+		\State $i=i-1$
+	\EndWhile
+\EndFor
+\State $A[i+1] = key$
+\end{algorithmic}
+\end{algorithm}
+
+
+\noindent\textbf{ Exercise 2.1-3}\\
+
+\begin{algorithm} \begin{algorithmic}[1]
+ \State $i=NIL$
+ \For{ $j = 1$ to $A.length$}
+ \If{ $A[j] = v$}
+ \State $i = j$
+ \State \Return $i$
+ \EndIf 
+\State \Return $i$
+ \EndFor
+ \end{algorithmic}
+\end{algorithm}
+On each iteration of the loop body, the invariant upon entering is that there is no index $k<j$ so that $A[k]=v$. In order to procede to the next iteration of the loop, we need that for the current value of $j$, we do not have $A[j] =v$. If the loop is exited by line 5, then we have just placed an acceptable value in $i$ on the previous line. If the loop is exited by exhausting all possible values of $j$, then we know that there is no index that has value $j$, and so leaving $NIL$ in $i$ is correct. \\
+
+\noindent\textbf{ Exercise 2.1-4} \\
+
+\textbf{Input:} two $n$-element arrays $A$ and $B$ containing the binary digits of two numbers $a$ and $b$.  
+
+\textbf{Output:} an $(n+1)$-element array $C$ containing the binary digits of $a+b$.
+\begin{algorithm}
+\caption{Adding $n$-bit Binary Integers}
+\begin{algorithmic}[1]
+\State carry = 0
+\For{i=1 to n}
+	\State $C[i] = (A[i] + B[i] + carry)$ (mod 2)
+	\If{$A[i] + B[i] + carry \geq 2$}
+		\State carry = 1
+	\Else
+	\State carry = 0
+	\EndIf
+\EndFor
+\State C[n+1] = carry
+\end{algorithmic}
+\end{algorithm}
+
+\noindent\textbf{ Exercise 2.2-1}\\
+
+$n^3/1000 - 100n^2-100n +3 \in \Theta(n^3)$ \\
+
+\noindent\textbf{ Exercise 2.2-2}\\
+
+\textbf{Input:} An $n$-element array $A$.
+
+\textbf{Output:} The array $A$ with its elements rearranged into increasing order.
+
+\begin{algorithm}
+\caption{Selection Sort}
+\begin{algorithmic}[1]
+\For{$i=1$ to $n-1$}
+	\State $min = i$
+	\For{$j=i+1$ to $n$} 
+	\State // Find the index of the $i^{th}$ smallest element
+		\If{$A[j] < A[min]$}
+			\State $min = j$
+		\EndIf
+	\EndFor
+	\State Swap $A[min]$ and $A[i]$
+\EndFor
+\end{algorithmic}
+\end{algorithm}
+
+The loop invariant of selection sort is as follows:  At each iteration of the for loop of lines 1 through 10, the subarray $A[1..i-1]$ contains the $i-1$ smallest elements of $A$ in increasing order.  After $n-1$ iterations of the loop, the $n-1$ smallest elements of $A$ are in the first $n-1$ positions of $A$ in increasing order, so the $n^{th}$ element is necessarily the largest element.  Therefore we do not need to run the loop a final time.  The best-case and worst-case running times of selection sort are $\Theta(n^2)$.  This is because regardless of how the elements are initially arranged, on the $i^{th}$ iteration of the main for loop the algorithm always inspects each of the remaining $n-i$ elements to find the smallest one remaining.  This yields a running time of 
+\[ \sum_{i=1}^{n-1} n-i = n(n-1) - \sum_{i=1}^{n-1} i = n^2 - n - \frac{n^2 - n}{2} = \frac{n^2 - n}{2} = \Theta(n^2).\]
+
+\noindent\textbf{ Exercise 2.2-3}\\
+
+Suppose that every entry has probability $p$ of being the element looked for. Then, we will only check $k$ elements if the previous $k-1$ positiions were not the element being looked for, and the $k$th position is the desired value. Taking the expected value of this distribution we get it to be
+\[
+(1-p)^{A.length} + \sum_{k=1}^{A.length} k(1-p)^{k-1}p^k
+\]
+
+\noindent\textbf{Exercise 2.2-4}\\
+
+For a good best-case running time, modify an algorithm to first randomly produce output and then check whether or not it satisfies the goal of the algorithm.  If so, produce this output and halt.  Otherwise, run the algorithm as usual.  It is unlikley that this will be successful, but in the best-case the running time will only be as long as it takes to check a solution.  For example, we could modify selection sort to first randomly permut the elements of $A$, then check if they are in sorted order.  If they are, output $A$.  Otherwise run selection sort as usual.  In the best case, this modified algorithm will have running time $\Theta(n)$. \\
+
+\noindent\textbf{Exercise 2.3-1}\\
+
+If we start with reading accross the bottom of the tree and then go up level by level.
+$
+\begin{array}{|c|c|c|c|c|c|c|c|}
+\hline
+3&41&52&26&38&57&9&49\\
+\hline
+3&41&26&52&38&57&9&49\\
+\hline
+3&26&41&52&9&38&49&57\\
+\hline
+3&9&26&38&41&49&52&57\\
+\hline
+\end{array}
+$\\
+
+\noindent\textbf{Exercise 2.3-2}\\
+
+The following is a rewrite of MERGE which avoids the use of sentinels.  Much like MERGE, it begins by copying the subarrays of $A$ to be merged into arrays $L$ and $R$.  At each iteration of the while loop starting on line 13 it selects the next smallest element from either $L$ or $R$ to place into $A$.  It stops if either $L$ or $R$ runs out of elements, at which point it copies the remainder of the other subarray into the remaining spots of $A$.  \\
+
+\begin{algorithm}
+\caption{$Merge(A,p,q,r)$}
+\begin{algorithmic}[1]
+\State $n_1 = q-p+1$
+\State $n_2 = r-q$
+\State let $L[1,..n_1]$ and $R[1..n_2]$ be new arrays
+\For{$i=1$ to $n_1$}
+	\State $L[i] = A[p+i-1]$
+\EndFor
+\For{$j=1$ to $n_2$}
+	\State $R[j] = A[q+j]$
+\EndFor
+\State $i=1$
+\State $j=1$
+\State $k=p$
+\While{$i \neq n_1 + 1$ and $j \neq n_2 + 1$}
+	\If{$L[i] \leq R[j]$}
+		\State $A[k] = L[i]$
+		\State $i = i+1$
+	\Else  $\,\,\,A[k] = R[j]$
+		\State $j = j+1$
+	\EndIf
+\State $k = k + 1$
+\EndWhile
+\If{$i == n_1 + 1$}
+	\For{$m=j$ to $n_2$}
+		\State $A[k] = R[m]$
+		\State $k = k + 1$	
+	\EndFor
+\EndIf
+\If{$j == n_2 + 1$}
+	\For{$m = i$ to $n_1$}
+		\State $A[k] = L[m]$
+		\State $k = k + 1$
+	\EndFor
+\EndIf
+\end{algorithmic}
+\end{algorithm}
+
+
+\noindent\textbf{Exercise 2.3-3}\\
+
+Since $n$ is a power of two, we may write $n= 2^k$. If $k=1$, $T(2) = 2 = 2\lg(2)$. Suppose it is true for $k$, we will show it is true for $k+1$.
+\[
+T(2^{k+1}) = 2T\left(\frac{2^{k+1}}{2}\right) + 2^{k+1} = 2T\left(2^{k}\right) + 2^{k+1} = 2(2^k\lg(2^k)) + 2^{k+1} \]\[= k2^{k+1}+ 2^{k+1} = (k+1)2^{k+1} = 2^{k+1} \lg(2^{k+1}) = n\lg(n)
+\]
+
+\noindent\textbf{Exercise 2.3-4}\\
+
+Let $T(n)$ denote the running time for insertion sort called on an array of size $n$.  We can express $T(n)$ recursively as 
+\[ T(n) = \left\{ \begin{array}{l} \Theta(1) \hspace{2cm} \mbox{if } n \leq c \\ T(n-1)I(n) \hspace{.6cm} \mbox{otherwise}\end{array} \right. \]
+
+where $I(n)$ denotes the amount of time it takes to insert $A[n]$ into the sorted array $A[1..n-1]$.  As seen in exercise 2.3-5, $I(n)$ is $\Theta(\log n)$. \\
+
+
+\noindent\textbf{Exercise 2.3-5} \\
+
+The following recursive algorithm gives the desired result when called with $a=1$ and $b=n$.
+
+\begin{algorithm}\begin{algorithmic}[1]
+\State BinSearch(a,b,v)
+\If $a>b$
+\State return NIL
+\EndIf
+\State $m = \lfloor \frac{a+b}{2}\rfloor$
+\If $m=v$
+\State return $m$
+\EndIf
+\If $m<v$
+\State return BinSearch(a,m,v)
+\EndIf
+\State return BinSearch(m+1,b,v)
+\end{algorithmic}
+\end{algorithm}
+Note that the initial call should be $BinSearch(1,n,v)$. Each call results in a constant number of operations plus a call to a problem instance where the quantity $b-a$ falls by at least a factor of two. So, the runtime satisfies the recurrence $T(n)= T(n/2)+c$. So, $T(n)\in\Theta(\lg(n))$ \\
+
+\noindent\textbf{Exercise 2.3-6}\\
+
+A binary search wouldn't improve the worst-case running time.  Insertion sort has to copy each element greater than $key$ into its neighboring spot in the array.  Doing a binary search would tell us how many how many elements need to be copied over, but wouldn't rid us of the copying needed to be done. \\
+
+\noindent\textbf{Exercise 2.3-7}\\
+
+\begin{algorithm} \begin{algorithmic}[1]
+ \State Use Merge Sort to sort the array $A$ in time $\Theta(n\lg(n))$
+\State $i=1$
+\State $j = n$
+ \While{$i<j$}
+ \If{$A[j] + A[j] = S$}
+ \State return true
+ \EndIf
+ \If{$A[i]+A[j] < S$}
+ \State $ i = i+1$
+ \EndIf 
+ \If{$A[i]+A[j] > S$}
+ \State $ j = j-1$
+ \EndIf 
+ \EndWhile
+ \State return false
+ \end{algorithmic}
+\end{algorithm}
+
+We can see that the while loop gets run at most $O(n)$ times, as the quantity $j-i$ starts at $n-1$ and decreeases at each step. Also, since the body only consists of a constant amount of work, all of lines 2-15 takes only $O(n)$ time. So, the runtime is dominated by the time to perform the sort, which is $\Theta(n\lg(n))$. We will prove correctness by a mutual induction. Let $m_{i,j}$ be the proposition $A[i]+A[j]<S$ and $M_{i,j}$ be the proposition $A[i]+A[j]>S$. Note that because the array is sorted, $m_{i,j} \Rightarrow \forall k<j, m_{i,k}$, and $M_{i,j} \Rightarrow \forall k>i, M_{k,j}$. 
+
+Our program will obviously only output true in the case that there is a valid $i$ and $j$. Now, suppose that our program output false, even though there were some $i,j$ that was not considered for which $A[i]+A[j]=S$. If we have $i>j$, then swap the two, and the sum will not change, so, assume $i\le j$. we now have two cases:
+
+Case 1 $\exists k, (i,k)$ was considered and $j<k$. In this case, we take the smallest such $k$. The fact that this is nonzero meant that immediately after considering it, we considered (i+1,k) which means $m_{i,k}$ this means $m_{i,j}$
+
+Case 2 $\exists k, (k,j)$ was considered and $k<i$. In this case, we take the largest such $k$. The fact that this is nonzero meant that immediately after considering it, we considered (k,j-1) which means $M_{k,j}$ this means $M_{i,j}$
+
+Note that one of these two cases must be true since the set of considered points separates $\{(m,m'): m\le m'<n\}$ into at most two regions. If you are in the region that contains $(1,1)$(if nonempty) then you are in Case 1. If you are in the region that contains $(n,n)$ (if non-empty) then you are in case 2. \\
+
+\noindent\textbf{Problem 2-1} \\
+
+\begin{enumerate}[a.]
+\item
+The time for insertion sort to sort a single list of length $k$ is $\Theta(k^2)$, so, $n/k$ of them will take time $\Theta(\frac{n}{k}k^2) = \Theta(nk)$.
+
+\item
+Suppose we have coarseness $k$. This meas we can just start using the usual merging procedure, except starting it at the level in which each array has size at most $k$. This means that the depth of the merge tree is $\lg(n) - \lg(k) = \lg(n/k)$. Each level of merging is still time $cn$, so putting it together, the merging takes time $\Theta(n\lg(n/k))$.
+
+
+\item
+Viewing $k$ as a function of $n$, as long as $k(n)\in O(\lg(n))$, it has the same asymptotics. In particular, for any constant choice of $k$, the asymptotics are the same.
+
+\item
+If we optimize the previous expression using our calculus 1 skills to get $k$, we have that $c_1n- \frac{nc_2}{k} = 0$ where $c_1$ and $c_2$ are the coeffients of $nk$ and $n\lg(n/k)$ hidden by the asymptotics notation. In particular, a constant choice of $k$ is optimal. In practice we could find the best choice of this $k$ by just trying and timing  for various values for sufficiently large $n$.
+
+\end{enumerate}
+
+\noindent\textbf{Problem 2-2}\\
+
+\begin{enumerate}
+\item We need to prove that $A'$ contains the same elements as $A$, which is easily seen to be true because the only modification we make to $A$ is swapping its elements, so the resulting array must contain a rearrangement of the elements in the original array. \\
+
+\item The \textbf{for} loop in lines 2 through 4 maintains the following loop invariant: At the start of each iteration, the position of the smallest element of $A[i..n]$ is at most $j$.  This is clearly true prior to the first iteration because the position of any element is at most $A.length$.  To see that each iteration maintains the loop invariant, suppose that $j=k$ and the position of the smallest element of $A[i..n]$ is at most $k$.  Then we compare $A[k]$ to $A[k-1]$.  If $A[k] < A[k-1]$ then $A[k-1]$ is not the smallest element of $A[i..n]$, so when we swap $A[k]$ and $A[k-1]$ we know that the smallest element of $A[i..n]$ must occur in the first $k-1$ positions of the subarray, the maintaining the invariant.  On the other hand, if $A[k] \geq A[k-1]$ then the smallest element can't be $A[k]$.  Since we do nothing, we conclude that the smallest element has position at most $k-1$.  Upon termination, the smallest element of $A[i..n]$ is in position $i$.  \\
+
+\item The \textbf{for} loop in lines 1 through 4 maintain the following loop invariant:  At the start of each iteration the subarray $A[1..i-1]$ contains the $i-1$ smallest elements of $A$ in sorted order.  Prior to the first iteration $i=1$, and the first 0 elements of $A$ are trivially sorted.  To see that each iteration maintains the loop invariant, fix $i$ and suppose that $A[1..i-1]$ contains the $i-1$ smallest elements of $A$ in sorted order.  Then we run the loop in lines 2 through 4.  We showed in part b that when this loop terminates, the smallest element of $A[i..n]$ is in position $i$.  Since the $i-1$ smallest elements of $A$ are already in $A[1..i-1]$, $A[i]$ must be the $i^{th}$ smallest element of $A$.  Therefore $A[1..i]$ contains the $i$ smallest elements of $A$ in sorted order, maintaining the loop invariant.  Upon termination, $A[1..n]$ contains the $n$ elements of $A$ in sorted order as desired. \\
+
+\item The $i^{th}$ iteration of the \textbf{for} loop of lines 1 through 4 will cause $n-i$ iterations of the \textbf{for} loop of lines 2 through 4, each with constant time execution, so the worst-case running time is $\Theta(n^2)$.  This is the same as that of insertion sort; however, bubble sort also has best-case running time $\Theta(n^2)$ whereas insertion sort has best-case running time $\Theta(n)$. \\
+
+\end{enumerate}
+
+\noindent\textbf{Problem 2-3}\\
+
+\begin{enumerate}[a.]
+\item
+
+If we assume that the arithmeticcan all  be done in constant time, then since  the loop is being executed $n$ times, it has runtime $\Theta(n)$.
+
+\item
+\begin{algorithm}
+\begin{algorithmic}[1]
+\State $y=0$
+\For{i=0 to n}
+\State $y_i = x$
+\For{j=1 to n}
+\State $y_i = y_i  x$ 
+\EndFor
+\State $y = y+ a_i  y_i$
+\EndFor
+\end{algorithmic}
+\end{algorithm}
+This code has runtime $\Theta(n^2)$ because it has to compute each of the powers of $x$. This is slower than Horner's rule.
+
+\item
+Initially, $i=n$, so, the upper bound of the summation is $-1$, so the sum evaluates to $0$, which is the value of $y$. For preservation, suppose it is true for an $i$, then, 
+\[
+ y = a_{i} + x \sum_{k=0}^{n-(i+1)} a_{k+i+1} x^k = a_i + x\sum_{k=1}^{n-i} a_{k+i} x^{k-1} = \sum_{k=0}^{n-i} a_{k+i}x^k
+ \]
+  At termination, $i=0$, so is summing up to $n-1$, so executing the body of the loop a last time gets us  the desired final result.
+
+\item
+We just showed that the algorithm evaluated $\Sigma_{k=0}^n a_kx^k$. This is the value of the polynomial evaluated at $x$.
+
+\end{enumerate}
+
+
+\noindent\textbf{Problem 2-4}
+
+\begin{enumerate}[a.]
+\item The five inversions are $(2,1)$, $(3,1)$, $(8,6)$, $(8,1)$, and $(6,1)$. \\
+
+\item The n-element array with the most inversions is $\langle n, n-1, \ldots, 2, 1 \rangle$.  It has $n-1 + n-2 + \ldots + 2 + 1 = \frac{n(n-1)}{2}$ inversions. \\
+
+\item The running time of insertion sort is a constant times the number of inversions.  Let $I(i)$ denote the number of $j < i$ such that $A[j] > A[i]$.  Then $\sum_{i=1}^n I(i)$ equals the number of inversions in $A$.  Now consider the \textbf{while} loop on lines 5-7 of the insertion sort algorithm.  The loop will execute once for each element of $A$ which has index less than $j$ is larger than $A[j]$.  Thus, it will execute $I(j)$ times.  We reach this \textbf{while} loop once for each iteration of the \textbf{for} loop, so the number of constant time steps of insertion sort is $\sum_{j=1}^n I(j)$ which is exactly the inversion number of $A$.  \\
+
+\item We'll call our algorithm M.Merge-Sort for Modified Merge Sort.  In addition to sorting $A$, it will also keep track of the number of inversions.  The algorithm works as follows.  When we call M.Merge-Sort(A,p,q) it sorts $A[p..q]$ and returns the number of inversions amongst the elements of $A[p..q]$, so $left$ and $right$ track the number of inversions of the form $(i,j)$ where $i$ and $j$ are both in the same half of $A$.  When M.Merge(A,p,q,r) is called, it returns the number of inversions of the form $(i,j)$ where $i$ is in the first half of the array and $j$ is in the second half.  Summing these up gives the total number of inversions in $A$.  The runtime is the same as that of Merge-Sort because we only add an additional constant-time operation to some of the iterations of some of the loops.  Since Merge is $\Theta(n \log n)$, so is this algorithm.
+
+\begin{algorithm}
+\caption{M.Merge-Sort(A, p, r)}
+\begin{algorithmic}
+\If{$p < r$}
+	\State $q = \lfloor(p+r)/2\rfloor$
+	\State $left = M.Merge-Sort(A,p,q)$
+	\State $right = M.Merge-Sort(A,q+1,r)$
+	\State $inv = M.Merge(A,p,q,r) + left + right$
+	\State \Return $inv$
+\EndIf
+\State \Return 0
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+\caption{M.Merge(A,p,q,r)}
+\begin{algorithmic}
+\State inv = 0
+\State $n_1 = q-p+1$
+\State $n_2 = r-q$
+\State let $L[1,..n_1]$ and $R[1..n_2]$ be new arrays
+\For{$i=1$ to $n_1$}
+	\State $L[i] = A[p+i-1]$
+\EndFor
+\For{$j=1$ to $n_2$}
+	\State $R[j] = A[q+j]$
+\EndFor
+\State $i=1$
+\State $j=1$
+\State $k=p$
+\While{$i \neq n_1 + 1$ and $j \neq n_2 + 1$}
+	\If{$L[i] \leq R[j]$}
+		\State $A[k] = L[i]$
+		\State $i = i+1$
+	\Else  $\,\,\,A[k] = R[j]$
+		\State $inv = inv + j$ // This keeps track of the number of inversions between the left and right arrays.
+		\State $j = j+1$
+	\EndIf
+\State $k = k + 1$
+\EndWhile
+\If{$i == n_1 + 1$}
+	\For{$m=j$ to $n_2$}
+		\State $A[k] = R[m]$
+		\State $k = k + 1$	
+	\EndFor
+\EndIf
+\If{$j == n_2 + 1$}
+	\For{$m = i$ to $n_1$}
+		\State $A[k] = L[m]$
+		\State $inv = inv + n_2$ // Tracks inversions once we have exhausted the right array.  At this point, every element of the right array contributes an inversion.
+		\State $k = k + 1$
+	\EndFor
+\EndIf
+\State \Return inv
+\end{algorithmic}
+\end{algorithm}
+
+\end{enumerate}
+\end{document}
